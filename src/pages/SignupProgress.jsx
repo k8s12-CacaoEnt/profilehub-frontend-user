@@ -1,12 +1,15 @@
 import React from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
 
-function SignupProgress() {
-  return (
-    <div className="SignupProgress">
-      <p>Step 1 of 3</p>
-      <progress value="33" max="100"> 33% </progress>
-    </div>
-  );
+function SignupProgress({ currentStep }) {
+    const progress = (currentStep / 3) * 100;
+
+    return (
+        <div className="SignupProgress">
+            <p>Step {currentStep} of 3</p>
+            <LinearProgress variant="determinate" value={progress} />
+        </div>
+    );
 }
 
 export default SignupProgress;

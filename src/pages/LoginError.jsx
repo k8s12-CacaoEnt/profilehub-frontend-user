@@ -1,10 +1,14 @@
 import React from 'react';
+import Button from '@mui/material/Button';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-function LoginError() {
+function LoginError({ resetStep }) {
     return (
         <div className="LoginError">
             <h2>Login Error</h2>
-            <button>Retry</button>
+            <ErrorOutlineIcon />
+
+            <Button onClick={resetStep} variant="contained" color="primary">Retry</Button>
         </div>
     );
 }
