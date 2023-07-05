@@ -34,7 +34,7 @@ function SignupPage() {
             <SignupProgress currentStep={step} />
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {step !== 1 && <Button variant="outlined" color="secondary" onClick={handlePrevious}>Back</Button>}
-                {step === 1 && <Button variant="outlined" color="secondary" onClick={handleSignIn}>Do you have an ID already?</Button>}
+                {step === 1 && <Button variant="outlined" color="primary" onClick={handleSignIn}>Login</Button>}
                 <Button variant="contained" color="primary" onClick={handleNext}>Next</Button>
             </div>
         </div>

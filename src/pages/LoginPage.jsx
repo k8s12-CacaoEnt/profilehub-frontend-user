@@ -1,10 +1,9 @@
-// LoginPage.jsx
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import LoginError from './LoginError';
 import { useNavigate } from 'react-router-dom';
-import AuthService from "../services/auth.service.js";
+import AuthService from "../services/AuthService.js";
 import Box from '@mui/material/Box';
 
 function LoginPage() {
@@ -13,7 +12,6 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
-
     const handleUsernameSubmit = () => {
         setStep(2);
     }
@@ -27,7 +25,7 @@ function LoginPage() {
 
         AuthService.login(username, password).then(
             () => {
-                navigate("/dashboard");
+                navigate("/");
             },
             (error) => {
                 const resMessage =
@@ -37,10 +35,12 @@ function LoginPage() {
                     error.message ||
                     error.toString();
 
-                setShowError(resMessage);
+                console.log(resMessage);
             }
         );
     }
+
+    
 
     return (
         <div className="LoginPage">
@@ -61,7 +61,7 @@ function LoginPage() {
                     <TextField id="outlined-password-input" label="Password" type="password" autoComplete="current-password" variant="outlined" onChange={e => setPassword(e.target.value)} />
                     <Button onClick={handleLogin} variant="contained" color="primary">Login</Button>
                     {showError && <LoginError resetStep={() => setStep(1)} />}
-                    </Box>
+                </Box>
             )}
         </div>
     );

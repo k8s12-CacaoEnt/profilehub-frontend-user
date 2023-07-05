@@ -5,10 +5,10 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 function LoginError({ resetStep }) {
     return (
         <div className="LoginError">
-            <h2>Login Error</h2>
-            <ErrorOutlineIcon />
-
-            <Button onClick={resetStep} variant="contained" color="primary">Retry</Button>
+            <h3>Login Error</h3>
+            <ErrorOutlineIcon size="small" color='warning' />
+            <br/>
+            <Button onClick={resetStep} size="small" variant="contained" color="primary">Retry</Button>
         </div>
     );
 }

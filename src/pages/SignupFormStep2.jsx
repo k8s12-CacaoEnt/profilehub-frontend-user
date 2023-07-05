@@ -12,7 +12,7 @@ function SignupFormStep2() {
     // Make API call to check username duplication 
 
     return (
-        <div className="SignupFormStep2">
+        <div className="SignupFormStep2" style={{ display: 'flex', flexDirection: 'column'}}>
             <h2>Step 2</h2>
             <TextField id="username-input" label="Username" variant="outlined" />
             <RadioGroup row defaultValue="male">
