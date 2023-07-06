@@ -12,9 +12,6 @@ function LoginPage() {
     const [password, setPassword] = useState('');
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate();
-    const handleUsernameSubmit = () => {
-        setStep(2);
-    }
 
     const handleSignUp = () => {
         navigate('/signup');
@@ -23,7 +20,7 @@ function LoginPage() {
     const handleLogin = (e) => {
         e.preventDefault();
 
-        AuthService.login(username, password).then(
+        AuthService.login({memberEmail: username, memberPassword: password}).then(
             () => {
                 navigate("/");
             },
@@ -48,19 +45,13 @@ function LoginPage() {
 
             {step === 1 && (
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <TextField id="outlined-basic" label="Username" variant="outlined" onChange={e => setUsername(e.target.value)} />
+                    <TextField id="outlined-basic" label="Email" variant="outlined" onChange={e => setUsername(e.target.value)} />
+                    <TextField id="outlined-password-input" label="Password" type="password" autoComplete="current-password" variant="outlined" onChange={e => setPassword(e.target.value)} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <Button onClick={handleSignUp} variant="outlined" color="primary">Sign Up</Button>
-                        <Button onClick={handleUsernameSubmit} variant="contained" color="primary">Next</Button>
+                        <Button onClick={handleLogin} variant="contained" color="primary">Login</Button>
+                        {showError && <LoginError resetStep={() => setStep(1)} />}
                     </Box>
-                </Box>
-            )}
-
-            {step === 2 && (
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <TextField id="outlined-password-input" label="Password" type="password" autoComplete="current-password" variant="outlined" onChange={e => setPassword(e.target.value)} />
-                    <Button onClick={handleLogin} variant="contained" color="primary">Login</Button>
-                    {showError && <LoginError resetStep={() => setStep(1)} />}
                 </Box>
             )}
         </div>
