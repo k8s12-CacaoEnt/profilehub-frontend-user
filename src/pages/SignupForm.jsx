@@ -43,7 +43,7 @@ function SignupForm() {
                 <MenuItem value="voiceActor">성우</MenuItem>
             </Select>
             <TextField id="email-input" label="Email" variant="outlined" value={memberEmail} onChange={e => setMemberEmail(e.target.value)} />
-            <Button onClick={checkEmailDuplicate}>중복 확인</Button>
+            <Button onClick={checkEmailDuplicate}>이메일 중복 확인</Button>
             <TextField id="password-input" label="Password" type="password" autoComplete="current-password" variant="outlined" value={memberPassword} onChange={e => setMemberPassword(e.target.value)} />
             <TextField id="confirmPassword-input" label="Confirm Password" type="password" autoComplete="current-password" variant="outlined" value={memberConfirmPassword} onChange={e => setMemberConfirmPassword(e.target.value)} />
             
