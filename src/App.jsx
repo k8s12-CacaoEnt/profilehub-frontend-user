@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
+import NoticeListPage from './pages/NoticeListPage';
 import Button from '@mui/material/Button';
 import './App.css';
 
@@ -18,6 +19,10 @@ function HomePage() {
         <Link to="/signup">
           <Button variant="outlined" color="primary">Sign Up</Button>
         </Link>
+
+        <Link to="/NoticeListPage">
+          <Button variant="outlined" color="primary">Notice List</Button>
+        </Link>
     </header>
   )
 }
@@ -32,6 +37,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/ProfilePage" element={<ProfilePage />} />
+          <Route path="/NoticeListPage" element={<NoticeListPage />} />
         </Routes>
       </div>
     </Router>
