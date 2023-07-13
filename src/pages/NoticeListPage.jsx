@@ -14,8 +14,18 @@ const NoticeListPage = () => {
             apply_deadline_dt: '2023-07-20',
             filming_start_period: '2023-07-22',
             filming_end_period: '2023-07-29',
-            create_dt: '2023-07-01',
-            modify_dt: '2023-07-02',
+            member_id: 1,
+        },
+        {
+            noticeId: 2,
+            title: 'Notice 2',
+            content: 'Content 2',
+            filmo_type: 'Type 2',
+            filmo_name: 'Name 2',
+            filmo_role: 'Role 2',
+            apply_deadline_dt: '2023-07-20',
+            filming_start_period: '2023-07-22',
+            filming_end_period: '2023-07-29',
             member_id: 1,
         },
         // ...다른 공지사항 데이터
@@ -45,8 +55,6 @@ const NoticeListPage = () => {
                         <TableCell>Deadline</TableCell>
                         <TableCell>Start Period</TableCell>
                         <TableCell>End Period</TableCell>
-                        <TableCell>Create Date</TableCell>
-                        <TableCell>Modify Date</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -62,8 +70,7 @@ const NoticeListPage = () => {
                             <TableCell>{notice.apply_deadline_dt}</TableCell>
                             <TableCell>{notice.filming_start_period}</TableCell>
                             <TableCell>{notice.filming_end_period}</TableCell>
-                            <TableCell>{notice.create_dt}</TableCell>
-                            <TableCell>{notice.modify_dt}</TableCell>                        </TableRow>
+                            </TableRow>
                     ))}
 
 
