@@ -26,8 +26,10 @@ const dummyProfile = {
         },
     ],
 }
-const ProfilePage = () => {
-    const [profile, setProfile] = React.useState(null);
+
+
+// Image component
+const ProfileMemberImg = ({ profile }) => {
     const getProfileImgPath = (profile) => {
         if (!profile || !profile.images || profile.images.length < 0) return null;
         for(let i = 0; i < profile.images.length; i++) {
@@ -37,6 +39,36 @@ const ProfilePage = () => {
         }
         return null;
     }
+    return (
+        <Img src={getProfileImgPath(profile)}/>
+    )
+}
+// Information component
+const ProfileMemberInfo = ({ profile }) => {
+    return (
+        <InfoDiv>
+            <ProfileMemberContent>
+                <ProfileMemberContentValue>{profile.memberInfo.memberType}</ProfileMemberContentValue>
+                <ProfileMemberContentValue>{profile.memberInfo.memberName}</ProfileMemberContentValue>
+            </ProfileMemberContent>
+            <ProfileMemberContent>
+                <ProfileMemberContentKey>출생</ProfileMemberContentKey>
+                <ProfileMemberContentValue>{profile.memberInfo.birthDt}</ProfileMemberContentValue>
+            </ProfileMemberContent>
+            <ProfileMemberContent>
+                <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
+                <ProfileMemberContentValue>{profile.memberInfo.memberEmail}</ProfileMemberContentValue>
+            </ProfileMemberContent>
+            <ProfileMemberContent>
+                <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
+                <ProfileMemberContentValue>{profile.memberInfo.telNo}</ProfileMemberContentValue>
+            </ProfileMemberContent>
+        </InfoDiv>
+    )
+}
+
+const ProfilePage = () => {
+    const [profile, setProfile] = React.useState(null);
     const getProfile = async () => {
         //TODO: getProfile
         setProfile(dummyProfile)
@@ -51,29 +83,13 @@ const ProfilePage = () => {
             profile && (
                 <ProfileDiv>
                     <ProfileMemberDiv>
-                        <ProfileMemberImg src={getProfileImgPath(profile)}/>
-                        <ProfileMemberInfoDiv>
-                            <ProfileMemberContent>
-                                <ProfileMemberContentValue>{profile.memberInfo.memberType}</ProfileMemberContentValue>
-                                <ProfileMemberContentValue>{profile.memberInfo.memberName}</ProfileMemberContentValue>
-                            </ProfileMemberContent>
-                            <ProfileMemberContent>
-                                <ProfileMemberContentKey>출생</ProfileMemberContentKey>
-                                <ProfileMemberContentValue>{profile.memberInfo.birthDt}</ProfileMemberContentValue>
-                            </ProfileMemberContent>
-                            <ProfileMemberContent>
-                                <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
-                                <ProfileMemberContentValue>{profile.memberInfo.memberEmail}</ProfileMemberContentValue>
-                            </ProfileMemberContent>
-                            <ProfileMemberContent>
-                                <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
-                                <ProfileMemberContentValue>{profile.memberInfo.telNo}</ProfileMemberContentValue>
-                            </ProfileMemberContent>
-                        </ProfileMemberInfoDiv>
+                        {/* Replace the existing components with the new ones */}
+                        <ProfileMemberImg profile={profile}/>
+                        <ProfileMemberInfo profile={profile}/>
                     </ProfileMemberDiv>
                     <ProfileContent>
-                        <ProfileContentTitle>프로필 타이틀</ProfileContentTitle>
-                        <ProfileContentCoverLetter>프로필 content</ProfileContentCoverLetter>
+                        <ProfileContentTitle>{profile.title}</ProfileContentTitle>
+                        <ProfileContentCoverLetter>{profile.content}</ProfileContentCoverLetter>
                     </ProfileContent>
                 </ProfileDiv>
             )
@@ -82,6 +98,24 @@ const ProfilePage = () => {
         </>
   );
 };
+
+const Img = styled.img`
+    width: 50%;
+    height: auto;
+    border: 1px solid #000; //외곽선 적용
+    border-radius: 10px; // 외곽선 라운딩 적용
+`;
+const InfoDiv = styled.div`
+    width: 50%;
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #000; //외곽선 적용
+    border-radius: 10px; // 외곽선 라운딩 적용
+    padding: 20px; // 외곽선과 콘텐츠 사이의 간격 조정
+`;
 const ProfileDiv = styled.div`
     width: 100%;
     background-color: grey;
@@ -93,32 +127,26 @@ const ProfileMemberDiv = styled.div`
     align-items: center;
     background-color: white;
 `;
-const ProfileMemberImg = styled.img`
-    width: 50%;
-    height: auto;
-`;
-const ProfileMemberInfoDiv = styled.div`
-    width: 50%;
-    margin: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
 const ProfileMemberContent = styled.div`
-    padding: 10px;
+    padding: 5px;
     width: 100%;
     text-align: left;
 `;
 const ProfileMemberContentKey = styled.div`
     font-size: 15px;
     color: #999999;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+
+    @media (max-width: 768px) {
+        font-size: 13px;
 `;
 const ProfileMemberContentValue = styled.div`
     font-size: 18px;
     font-weight : bold;
     color: #222222;
+
+    @media (max-width: 768px) {
+        font-size: 15px;
 `;
 const ProfileContent = styled.div`
     width: 100%;
