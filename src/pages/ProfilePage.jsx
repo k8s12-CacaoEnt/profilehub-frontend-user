@@ -10,7 +10,7 @@ const dummyProfile = {
     defaultImageId: 1,
     memberInfo: {
         memberId: 1,
-        memberType: "MODEL",
+        memberType: "모델",
         memberEmail: "mail@gmail.com",
         memberName: "정종형",
         gender: "남자",
@@ -54,23 +54,27 @@ const ProfilePage = () => {
                         <ProfileMemberImg src={getProfileImgPath(profile)}/>
                         <ProfileMemberInfoDiv>
                             <ProfileMemberContent>
-                                <ProfileMemberContentKey>배우 이름</ProfileMemberContentKey>
+                                <ProfileMemberContentValue>{profile.memberInfo.memberType}</ProfileMemberContentValue>
                                 <ProfileMemberContentValue>{profile.memberInfo.memberName}</ProfileMemberContentValue>
+                            </ProfileMemberContent>
+                            <ProfileMemberContent>
+                                <ProfileMemberContentKey>출생</ProfileMemberContentKey>
+                                <ProfileMemberContentValue>{profile.memberInfo.birthDt}</ProfileMemberContentValue>
                             </ProfileMemberContent>
                             <ProfileMemberContent>
                                 <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
                                 <ProfileMemberContentValue>{profile.memberInfo.memberEmail}</ProfileMemberContentValue>
                             </ProfileMemberContent>
                             <ProfileMemberContent>
-                                <ProfileMemberContentKey>성별</ProfileMemberContentKey>
-                                <ProfileMemberContentValue>{profile.memberInfo.gender}</ProfileMemberContentValue>
+                                <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
+                                <ProfileMemberContentValue>{profile.memberInfo.telNo}</ProfileMemberContentValue>
                             </ProfileMemberContent>
                         </ProfileMemberInfoDiv>
                     </ProfileMemberDiv>
-                    <>
-                        <>프로필 타이틀</>
-                        <>프로필 content</>
-                    </>
+                    <ProfileContent>
+                        <ProfileContentTitle>프로필 타이틀</ProfileContentTitle>
+                        <ProfileContentCoverLetter>프로필 content</ProfileContentCoverLetter>
+                    </ProfileContent>
                 </ProfileDiv>
             )
         }
@@ -80,14 +84,14 @@ const ProfilePage = () => {
 };
 const ProfileDiv = styled.div`
     width: 100%;
-    background-color: red;
+    background-color: grey;
 `;
 const ProfileMemberDiv = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: blue;
+    background-color: white;
 `;
 const ProfileMemberImg = styled.img`
     width: 50%;
@@ -95,6 +99,7 @@ const ProfileMemberImg = styled.img`
 `;
 const ProfileMemberInfoDiv = styled.div`
     width: 50%;
+    margin: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -106,12 +111,34 @@ const ProfileMemberContent = styled.div`
     text-align: left;
 `;
 const ProfileMemberContentKey = styled.div`
-    font-size: 25px;
-    color: #222222;
+    font-size: 15px;
+    color: #999999;
     margin-bottom: 10px;
 `;
 const ProfileMemberContentValue = styled.div`
-    font-size: 20px;
-    color: #999999;
+    font-size: 18px;
+    font-weight : bold;
+    color: #222222;
+`;
+const ProfileContent = styled.div`
+    width: 100%;
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+`;
+const ProfileContentTitle = styled.div`
+    font-size: 18px;
+    font-weight : bold;
+    color: #222222;
+    text-align: left;
+`;
+const ProfileContentCoverLetter = styled.div`
+    font-size: 15px;
+    font-weight : bold;
+    color: #444444;
+    text-align: left;
 `;
 export default ProfilePage;
