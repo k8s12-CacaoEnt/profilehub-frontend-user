@@ -162,11 +162,17 @@ const ProfileContentTitle = styled.div`
     font-weight : bold;
     color: #222222;
     text-align: left;
+
+    @media (max-width: 768px) {
+        font-size: 15px;
 `;
 const ProfileContentCoverLetter = styled.div`
     font-size: 15px;
     font-weight : bold;
     color: #444444;
     text-align: left;
+
+    @media (max-width: 768px) {
+        font-size: 13px;
 `;
 export default ProfilePage;

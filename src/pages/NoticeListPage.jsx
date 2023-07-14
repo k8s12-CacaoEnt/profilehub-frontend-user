@@ -1,84 +1,150 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import styled from 'styled-components';
+
+const dummyNotice = {
+    noticeId: 1,
+    noticeTitle: '니케 모델 모집합니다.',
+    noticeContent: `이번 2023 S/S 니케 모델을 찾고 있습니다.
+    본인의 스타일이 니케에 가장 어울리고 잘 맞는다고 생각하시는 분들, 나의 가치관이 니케와
+    일치한다고 생각하시는 분들 등 많은 분들의 지원 부탁드립니다.`,
+    filmoType:'모델',
+    filmoName:'니케 S/S 모델 구인',
+    filmoRole:'니케 남성 모델',
+    applyDeadlineDt:'2023-08-01T12:00:00.000Z',
+    filmingStartPeriod:'2023-09-01T12:00:00.000Z',
+    filmingEndPeriod: '2023-10-01T12:00:00.000Z',
+    createDt: '2023-07-01T12:00:00.000Z',
+    modifyDt: '2023-07-01T12:00:00.000Z',
+    member: {
+      memberId: 0,
+      memberType: "ACTOR",
+      memberEmail: 'mail@gmail.com',
+      memberName: "string",
+      memberBirthDt: "2023-07-14T05:08:18.062Z",
+      createDt: "2023-07-14T05:08:18.062Z",
+      modifyDt: "2023-07-14T05:08:18.062Z",
+      },
+      "roleList": [
+        '모델','배우','성우'
+      ]
+    }
+
+
+const NoticeRow = ({ notice }) => {
+
+    let applyDeadlineDt = new Date(notice.applyDeadlineDt);
+    let formattedApplyDeadlineDt = applyDeadlineDt.toLocaleDateString('ko-KR');
+    let timeApplyDeadlineDt = applyDeadlineDt.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+    let filmingStartPeriod = new Date(notice.filmingStartPeriod);
+    let formattedFilmingStartPeriod = filmingStartPeriod.toLocaleDateString('ko-KR');
+    let timeFilmingStartPeriod = filmingStartPeriod.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+    let filmingEndPeriod = new Date(notice.filmingEndPeriod);
+    let formattedFilmingEndPeriod = filmingEndPeriod.toLocaleDateString('ko-KR');
+    let timeFilmingEndPeriod = filmingEndPeriod.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+    return (
+        <TableRow>
+            <TableCell>{notice.noticeTitle}</TableCell>
+            <TableCell>{notice.filmoType}</TableCell>
+            <TableCell>{notice.filmoName}</TableCell>
+            <TableCell>{notice.filmoRole}</TableCell>
+            <TableCell>
+                {formattedApplyDeadlineDt}
+                <br />
+                {timeApplyDeadlineDt}
+            </TableCell>
+            <TableCell>
+                {formattedFilmingStartPeriod}
+                <br />
+                {timeFilmingStartPeriod}
+            </TableCell>
+            <TableCell>
+                {formattedFilmingEndPeriod}
+                <br />
+                {timeFilmingEndPeriod}
+            </TableCell>
+        </TableRow>
+    );
+};
 
 const NoticeListPage = () => {
-    // 임시 데이터
-    const noticeData = [
-        {
-            noticeId: 1,
-            title: 'Notice 1',
-            content: 'Content 1',
-            filmo_type: 'Type 1',
-            filmo_name: 'Name 1',
-            filmo_role: 'Role 1',
-            apply_deadline_dt: '2023-07-20',
-            filming_start_period: '2023-07-22',
-            filming_end_period: '2023-07-29',
-            member_id: 1,
-        },
-        {
-            noticeId: 2,
-            title: 'Notice 2',
-            content: 'Content 2',
-            filmo_type: 'Type 2',
-            filmo_name: 'Name 2',
-            filmo_role: 'Role 2',
-            apply_deadline_dt: '2023-07-20',
-            filming_start_period: '2023-07-22',
-            filming_end_period: '2023-07-29',
-            member_id: 1,
-        },
-        // ...다른 공지사항 데이터
-    ];
+    const [noticeData, setNoticeData] = React.useState([dummyNotice]);
 
-    // create_dt를 기준으로 게시물을 정렬합니다. 최신 게시물이 가장 상단에 위치하게 됩니다.
-    const sortedNoticeData = noticeData.sort((a, b) => new Date(b.create_dt) - new Date(a.create_dt));
+    const getNotice = async () => {
+        //TODO: getNotice
+        setNoticeData([dummyNotice]); // Update real DB
+    };
 
+    React.useEffect(() => {
+        getNotice();
+    }, []);
 
     return (
         <>
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Notice Board
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-        <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Title</TableCell>
-                        <TableCell>Type</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Role</TableCell>
-                        <TableCell>Deadline</TableCell>
-                        <TableCell>Start Period</TableCell>
-                        <TableCell>End Period</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {noticeData.map((notice) => (
-                        <TableRow
-                            key={notice.noticeId}
-                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                        >
-                            <TableCell>{notice.title}</TableCell>
-                            <TableCell>{notice.filmo_type}</TableCell>
-                            <TableCell>{notice.filmo_name}</TableCell>
-                            <TableCell>{notice.filmo_role}</TableCell>
-                            <TableCell>{notice.apply_deadline_dt}</TableCell>
-                            <TableCell>{notice.filming_start_period}</TableCell>
-                            <TableCell>{notice.filming_end_period}</TableCell>
-                            </TableRow>
-                    ))}
-
-
-                </TableBody>
-            </Table>
-        </TableContainer>
+        {/* <>앱바</> */}
+        {
+            <NoticeDiv>
+                <NoticeToolbar>
+                Notice Board
+            </NoticeToolbar>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Title</TableCell>
+                            <TableCell>Type</TableCell>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>Deadline</TableCell>
+                            <TableCell>Start Period</TableCell>
+                            <TableCell>End Period</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {noticeData.map((notice) => (
+                            <NoticeRow key={notice.noticeId} notice={notice} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </NoticeDiv>
+        }
         </>
     );
 };
+
+const NoticeDiv = styled.div`
+    width: 100%;
+    background-color: white;
+    padding: 20px;
+`;
+
+const NoticeToolbar = styled.div`
+    width: 100%;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #111111;
+`;
+const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+`;
+
+const TableHead = styled.thead`
+    color: #222222;
+`;
+
+const TableBody = styled.tbody`
+    color: #444444;
+`;
+
+const TableRow = styled.tr`
+`;
+
+const TableCell = styled.td`
+    padding: 10px;
+    border: 1px solid #888888;
+`;
 
 export default NoticeListPage;
