@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
+
 
 const dummyNotice = {
     noticeId: 1,
@@ -30,6 +32,7 @@ const dummyNotice = {
     }
 
 
+
 const NoticeRow = ({ notice }) => {
 
     let applyDeadlineDt = new Date(notice.applyDeadlineDt);
@@ -46,7 +49,9 @@ const NoticeRow = ({ notice }) => {
 
     return (
         <TableRow>
-            <TableCell>{notice.noticeTitle}</TableCell>
+            <TableCell>
+            <Link to={`/notice/${notice.noticeId}`}>{notice.noticeTitle}</Link>
+            </TableCell>
             <TableCell>{notice.filmoType}</TableCell>
             <TableCell>{notice.filmoName}</TableCell>
             <TableCell>{notice.filmoRole}</TableCell>
@@ -70,16 +75,26 @@ const NoticeRow = ({ notice }) => {
 };
 
 const NoticeListPage = () => {
-    const [noticeData, setNoticeData] = React.useState([dummyNotice]);
+    const [noticeData, setNoticeData] = useState([dummyNotice]);
 
     const getNotice = async () => {
         //TODO: getNotice
         setNoticeData([dummyNotice]); // Update real DB
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         getNotice();
     }, []);
+
+    {noticeData.map(notice => (
+        <Link to={`/notice/${notice.noticeId}`}>
+            {/* Render your notice here */}
+        </Link>
+        ))}
+
+    if (!noticeData || noticeData.length === 0) {
+        return <p>No Notices Found</p>;
+    }
 
     return (
         <>
@@ -116,7 +131,6 @@ const NoticeListPage = () => {
 const NoticeDiv = styled.div`
     width: 100%;
     background-color: white;
-    padding: 20px;
 `;
 
 const NoticeToolbar = styled.div`

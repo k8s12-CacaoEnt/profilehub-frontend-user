@@ -4,6 +4,10 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
 import NoticeListPage from './pages/NoticeListPage';
+import NoticePage from './pages/NoticePage';
+import EditNoticePage from './pages/EditNoticePage';
+
+
 import Button from '@mui/material/Button';
 import './App.css';
 
@@ -33,11 +37,14 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/ProfilePage" element={<ProfilePage />} />
-          <Route path="/NoticeListPage" element={<NoticeListPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/ProfilePage" element={<ProfilePage />} />
+            <Route path="/NoticeListPage" element={<NoticeListPage />} />
+            <Route path="/notice/:noticeID" element={<NoticePage />} />
+            {/* <Route path="/notice/:noticeId" element={<NoticePage />} /> //서버와 연결시 코드 */}
+            <Route path="/notices/:noticeId/edit" element={<EditNoticePage />} />
         </Routes>
       </div>
     </Router>
