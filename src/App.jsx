@@ -43,8 +43,6 @@ function App() {
             <Route path="/ProfilePage" element={<ProfilePage />} />
             <Route path="/NoticeListPage" element={<NoticeListPage />} />
             <Route path="/notice/:noticeID" element={<NoticePage />} />
-            {/* <Route path="/notice/:noticeId" element={<NoticePage />} /> //서버와 연결시 코드 */}
-            <Route path="/notices/:noticeId/edit" element={<EditNoticePage />} />
         </Routes>
       </div>
     </Router>

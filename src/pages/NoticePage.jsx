@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
-import { useParams, Link } from "react-router-dom";
-
 
 const dummyNotice = {
     noticeId: 1,
@@ -17,19 +16,7 @@ const dummyNotice = {
     filmingEndPeriod: '2023-10-01T12:00:00.000Z',
     createDt: '2023-07-01T12:00:00.000Z',
     modifyDt: '2023-07-01T12:00:00.000Z',
-    member: {
-      memberId: 0,
-      memberType: "ACTOR",
-      memberEmail: 'mail@gmail.com',
-      memberName: "string",
-      memberBirthDt: "2023-07-14T05:08:18.062Z",
-      createDt: "2023-07-14T05:08:18.062Z",
-      modifyDt: "2023-07-14T05:08:18.062Z",
-      },
-      "roleList": [
-        '모델','배우','성우'
-      ]
-    }
+};
 
 const formatDateTime = (dateStr) => {
     let date = new Date(dateStr);
@@ -49,98 +36,159 @@ const formatDateTimeIfExist = (dateStr) => {
     return '';
 }
 
-const NoticeItem = ({ notice }) => {
-
-    return (
-        <div>
-            <h4>
-                <Link to={`/noticeListPage`}>목록으로 돌아가기</Link>
-            </h4>
-            <h5>
-            <Link to={`/notice/${noticeId}/edit`}>글 수정</Link>
-            </h5>
-            <p>
-                작품 분류 : 
-                {notice.filmoType}
-                </p>
-            <p>
-                작품명 : 
-                {notice.filmoName}
-                </p>
-            <p>
-                역할명 : 
-                {notice.filmoRole}
-                </p>
-            <p>
-                지원 마감 일자 :
-                {formatDateTime(notice.applyDeadlineDt)}
-
-            </p>
-            <p>
-                촬영 시작(예정)일 :
-                {formatDateTime(notice.filmingStartPeriod)}
-
-            </p>
-            <p>
-                촬영 종료(예정)일 :
-                {formatDateTime(notice.filmingEndPeriod)}
-            </p>
-            <p>
-                작성일 :
-                {formatDateTime(notice.createDt)}
-            </p>
-            {notice.modifyDt && (
-                <p>
-                    수정일 :
-                    {formatDateTimeIfExist(notice.modifyDt)}
-                </p>
-            )}
-            <p>
-                상세 내용 :
-                {notice.noticeContent}
-            </p>
-        </div>
-    );
+const NoticeItem = ({ notice, isEditing, onChange, onSubmit }) => {
+    if (isEditing) {
+        return (
+            <form onSubmit={onSubmit}>
+                <NoticeDiv>
+                    <NoticeTitleDiv>
+                        <StyeldLabel>
+                            Title:
+                            <StyledInput type="text" name="noticeTitle" value={notice.noticeTitle} onChange={onChange} />
+                        </StyeldLabel>
+                    </NoticeTitleDiv>
+                    <NoticeContentDiv>
+                        <StyeldLabel>
+                            작품 분류 : 
+                            <StyledInput type="text" name="filmoType" value={notice.filmoType} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            작품명 : 
+                            <StyledInput type="text" name="filmoName" value={notice.filmoName} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            역할명 : 
+                            <StyledInput type="text" name="filmoRole" value={notice.filmoRole} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            지원 마감 일자 :
+                            <StyledInput type="text" name="applyDeadlineDt" value={notice.applyDeadlineDt} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            촬영 시작(예정)일 :
+                            <StyledInput type="text" name="filmingStartPeriod" value={notice.filmingStartPeriod} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            촬영 종료(예정)일 :
+                            <StyledInput type="text" name="filmingEndPeriod" value={notice.filmingEndPeriod} onChange={onChange} />
+                        </StyeldLabel>
+                        <StyeldLabel>
+                            상세 내용 :
+                            <StyledTextArea name="noticeContent" value={notice.noticeContent} onChange={onChange} />
+                        </StyeldLabel>
+                        <button type="submit">수정하기</button>
+                    </NoticeContentDiv>
+                </NoticeDiv>
+            </form>
+        );
+    } else {
+        return (
+            <NoticeDiv>
+                <NoticeTitleDiv>
+                    {notice.noticeTitle}
+                </NoticeTitleDiv>
+                <NoticeContentDiv>
+                    <p>
+                        작품 분류 : 
+                        {notice.filmoType}
+                        </p>
+                    <p>
+                        작품명 : 
+                        {notice.filmoName}
+                        </p>
+                    <p>
+                        역할명 : 
+                        {notice.filmoRole}
+                        </p>
+                    <p>
+                        지원 마감 일자 :
+                        {formatDateTime(notice.applyDeadlineDt)}
+                    </p>
+                    <p>
+                        촬영 시작(예정)일 :
+                        {formatDateTime(notice.filmingStartPeriod)}
+                    </p>
+                    <p>
+                        촬영 종료(예정)일 :
+                        {formatDateTime(notice.filmingEndPeriod)}
+                    </p>
+                    <p>
+                        작성일 :
+                        {formatDateTime(notice.createDt)}
+                    </p>
+                    {notice.modifyDt && (
+                        <p>
+                            수정일 :
+                            {formatDateTimeIfExist(notice.modifyDt)}
+                        </p>
+                    )}
+                    <p>
+                        상세 내용 :
+                        {notice.noticeContent}
+                    </p>
+                </NoticeContentDiv>
+            </NoticeDiv>
+        );
+    }
 };
 
-const NoticePage = () => {
-    const { noticeId } = useParams(); // Now you can use noticeId to get the notice data
-    const [notice, setNotice] = React.useState(dummyNotice);
-    const getNotice = async () => {
-        // TODO: Replace this with your actual logic to get the notice
-        setNotice(dummyNotice)
+function NoticePage() {
+    const { noticeId } = useParams();
+    const navigate = useNavigate();
+    const [notice, setNotice] = useState(dummyNotice); // null?
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        // TODO: API call to get the notice info
+        setNotice(dummyNotice);
+    }, [noticeId]);
+
+    // useEffect(() => {
+    //     const fetchNotice = async () => {
+    //         const noticeFromDB = await getNoticeFromDB(noticeId);
+    //         setNotice(noticeFromDB);
+    //     }
+    //     fetchNotice();
+    // }, [noticeId]);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setNotice(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // TODO: API call to update the notice
+        console.log(`Updated notice: ${JSON.stringify(notice, null, 2)}`);
+        //         await updateNoticeInDB(notice);
+        setIsEditing(false);
+    };
+
+    const handleDelete = async () => {
+        // TODO: API call to delete the notice
+        console.log(`Deleted notice: ${noticeId}`);
+        //         await deleteNoticeInDB(noticeId);
+        // Redirect to the notice list page after successful deletion
+        navigate('/noticeListPage');
+    };
+
+    if (notice === null) {
+        return <p>Loading...</p>;
     }
-    React.useEffect(() => {
-        getNotice();
-    }, []);
-    
 
     return (
         <>
-        {/* <>App Bar</> */}
-        {
-            notice ? (
-                <NoticeDiv>
-                    <NoticeTitleDiv>
-                        {notice.noticeTitle}
-                    </NoticeTitleDiv>
-                    <NoticeContentDiv>
-                        {/* {
-                            noticeData.map((notice) => (
-                                <NoticeItem key={notice.noticeId} notice={notice} />
-                             ))
-                        } */}
-                            <NoticeItem key={notice.noticeId} notice={notice} />
-                    </NoticeContentDiv>
-                </NoticeDiv>
-            ) : (
-                <p>Loaging...</p>
-            )
-        }
-        {/* <>Footer</> */}
+            <Link to="/noticeListPage">목록으로 돌아가기</Link>
+            <NoticeItem notice={notice} isEditing={isEditing} onChange={handleChange} onSubmit={handleSubmit} />
+            {!isEditing && (
+                <>
+                    <button onClick={() => setIsEditing(true)}>글 수정</button>
+                    <button onClick={handleDelete}>글 삭제</button>
+                </>
+            )}
         </>
-  );
-};
+    );
+}
 
 const NoticeDiv = styled.div`
     width: 100%;
@@ -166,4 +214,19 @@ const NoticeContentDiv = styled.div`
     color: #444444;
     border: 1px solid #888888;
 `;
+const StyeldLabel = styled.label`
+    display : white;
+    margin-bottom: 10px
+`;
+const StyledInput = styled.input`
+    display : block;
+    width:100%
+    margin-bottom: 20px
+`;
+const StyledTextArea = styled.textarea`
+    display: block;
+    width: 100%
+    margin-bottom: 20px
+`;
+
 export default NoticePage;
