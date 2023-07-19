@@ -5,9 +5,6 @@ import SignupPage from './pages/SignupPage';
 import ProfilePage from './pages/ProfilePage';
 import NoticeListPage from './pages/NoticeListPage';
 import NoticePage from './pages/NoticePage';
-import EditNoticePage from './pages/EditNoticePage';
-
-
 import Button from '@mui/material/Button';
 import './App.css';
 

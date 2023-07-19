@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 const dummyProfile = {
     profileId: 1,
@@ -44,31 +44,79 @@ const ProfileMemberImg = ({ profile }) => {
     )
 }
 // Information component
-const ProfileMemberInfo = ({ profile }) => {
+const ProfileMemberInfo = ({ profile, isEditing, onChange, onSubmit }) => {
+    if (isEditing) {
+        return (
+            <form onSubmit={onSubmit}>
+                <InfoDiv>
+                    <StyledLabel>
+                    <ProfileMemberContentKey>회원 유형</ProfileMemberContentKey>
+                    <StyledInput type="text" name="memberType" value={profile.memberInfo.memberType} onChange={onChange} />
+                    </StyledLabel>
+                    <StyledLabel>
+                        <ProfileMemberContentKey>이름</ProfileMemberContentKey>
+                        <StyledInput type="text" name="memberName" value={profile.memberInfo.memberName} onChange={onChange} />
+                    </StyledLabel>
+                    <StyledLabel>
+                        <ProfileMemberContentKey>출생</ProfileMemberContentKey>
+                        <StyledInput type="text" name="birthDt" value={profile.memberInfo.birthDt} onChange={onChange} />
+                    </StyledLabel>
+                    <StyledLabel>
+                        <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
+                        <StyledInput type="text" name="memberEmail" value={profile.memberInfo.memberEmail} onChange={onChange} />
+                    </StyledLabel>
+                    <StyledLabel>
+                        <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
+                        <StyledInput type="text" name="telNo" value={profile.memberInfo.telNo} onChange={onChange} />
+                    </StyledLabel>
+                </InfoDiv>
+            </form>
+        );
+    } else {
+        return (
+            <InfoDiv>
+                <ProfileMemberContent>
+                    <ProfileMemberContentValue>{profile.memberInfo.memberType}</ProfileMemberContentValue>
+                    <ProfileMemberContentValue>{profile.memberInfo.memberName}</ProfileMemberContentValue>
+                </ProfileMemberContent>
+                <ProfileMemberContent>
+                    <ProfileMemberContentKey>출생</ProfileMemberContentKey>
+                    <ProfileMemberContentValue>{profile.memberInfo.birthDt}</ProfileMemberContentValue>
+                </ProfileMemberContent>
+                <ProfileMemberContent>
+                    <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
+                    <ProfileMemberContentValue>{profile.memberInfo.memberEmail}</ProfileMemberContentValue>
+                </ProfileMemberContent>
+                <ProfileMemberContent>
+                    <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
+                    <ProfileMemberContentValue>{profile.memberInfo.telNo}</ProfileMemberContentValue>
+                </ProfileMemberContent>
+            </InfoDiv>
+        );
+    }
+};
+
+const ProfileContent = ({ isEditing, profile, onChange }) => {
     return (
-        <InfoDiv>
-            <ProfileMemberContent>
-                <ProfileMemberContentValue>{profile.memberInfo.memberType}</ProfileMemberContentValue>
-                <ProfileMemberContentValue>{profile.memberInfo.memberName}</ProfileMemberContentValue>
-            </ProfileMemberContent>
-            <ProfileMemberContent>
-                <ProfileMemberContentKey>출생</ProfileMemberContentKey>
-                <ProfileMemberContentValue>{profile.memberInfo.birthDt}</ProfileMemberContentValue>
-            </ProfileMemberContent>
-            <ProfileMemberContent>
-                <ProfileMemberContentKey>이메일</ProfileMemberContentKey>
-                <ProfileMemberContentValue>{profile.memberInfo.memberEmail}</ProfileMemberContentValue>
-            </ProfileMemberContent>
-            <ProfileMemberContent>
-                <ProfileMemberContentKey>연락처</ProfileMemberContentKey>
-                <ProfileMemberContentValue>{profile.memberInfo.telNo}</ProfileMemberContentValue>
-            </ProfileMemberContent>
-        </InfoDiv>
-    )
-}
+        <ProfileContentDiv>
+            {isEditing ? (
+                <StyledInput type="text" name="title" value={profile.title} onChange={onChange} />
+            ) : (
+                <ProfileContentTitle>{profile.title}</ProfileContentTitle>
+            )}
+            {isEditing ? (
+                <StyledTextArea name="content" value={profile.content} onChange={onChange} />
+            ) : (
+                <ProfileContentCoverLetter>{profile.content}</ProfileContentCoverLetter>
+            )}
+        </ProfileContentDiv>
+    );
+};
 
 const ProfilePage = () => {
     const [profile, setProfile] = React.useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+
     const getProfile = async () => {
         //TODO: getProfile
         setProfile(dummyProfile)
@@ -76,6 +124,36 @@ const ProfilePage = () => {
     React.useEffect(() => {
         getProfile();
     }, []);
+
+    const handleDelete = async () => {
+        // API call to delete the profile
+        console.log(`Deleted profile: ${profile.profileId}`);
+        // await deleteProfileInDB(profile.profileId);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // API call to update the profile
+        console.log(`Updated profile: ${JSON.stringify(profile, null, 2)}`);
+        // await updateProfileInDB(profile);
+        setIsEditing(false);
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        if (name in profile.memberInfo) {
+            setProfile(prevState => ({ 
+                ...prevState, 
+                memberInfo: {
+                    ...prevState.memberInfo,
+                    [name]: value
+                }
+            }));
+        } else {
+            setProfile(prevState => ({ ...prevState, [name]: value}));
+        }
+    };
+
     return (
         <>
         {/* <>앱바</> */}
@@ -83,14 +161,16 @@ const ProfilePage = () => {
             profile && (
                 <ProfileDiv>
                     <ProfileMemberDiv>
-                        {/* Replace the existing components with the new ones */}
                         <ProfileMemberImg profile={profile}/>
-                        <ProfileMemberInfo profile={profile}/>
+                        <ProfileMemberInfo profile={profile} isEditing={isEditing} onChange={handleChange} onSubmit={handleSubmit}/>
                     </ProfileMemberDiv>
-                    <ProfileContent>
-                        <ProfileContentTitle>{profile.title}</ProfileContentTitle>
-                        <ProfileContentCoverLetter>{profile.content}</ProfileContentCoverLetter>
-                    </ProfileContent>
+                    <ProfileContent isEditing={isEditing} profile={profile} onChange={handleChange}/>
+                    <button onClick={isEditing ? handleSubmit : () => setIsEditing(true)}>
+                        {isEditing ? "수정 완료" : "프로필 수정"}
+                    </button>
+                    {!isEditing && (
+                        <button onClick={handleDelete}>프로필 삭제</button>
+                    )}
                 </ProfileDiv>
             )
         }
@@ -100,13 +180,13 @@ const ProfilePage = () => {
 };
 
 const Img = styled.img`
-    width: 50%;
+    width: 45%;
     height: auto;
     border: 1px solid #000; //외곽선 적용
     border-radius: 10px; // 외곽선 라운딩 적용
 `;
 const InfoDiv = styled.div`
-    width: 50%;
+    width: 45%;
     margin: 15px;
     display: flex;
     flex-direction: column;
@@ -118,17 +198,22 @@ const InfoDiv = styled.div`
 `;
 const ProfileDiv = styled.div`
     width: 100%;
+    max-width: 1280px;
+    margin: auto;
+    padding: 2rem;
+    overflow: auto;
     background-color: grey;
 `;
 const ProfileMemberDiv = styled.div`
     width: 100%;
     display: flex;
+    padding: 0.5rem;
     justify-content: center;
     align-items: center;
     background-color: white;
 `;
 const ProfileMemberContent = styled.div`
-    padding: 5px;
+    padding: 0.5rem;
     width: 100%;
     text-align: left;
 `;
@@ -148,20 +233,22 @@ const ProfileMemberContentValue = styled.div`
     @media (max-width: 768px) {
         font-size: 15px;
 `;
-const ProfileContent = styled.div`
+const ProfileContentDiv = styled.div`
     width: 100%;
-    margin: 5px;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
     text-align: left;
+    background-color: white;
 `;
 const ProfileContentTitle = styled.div`
     font-size: 18px;
     font-weight : bold;
     color: #222222;
     text-align: left;
+    margin: 20px;
 
     @media (max-width: 768px) {
         font-size: 15px;
@@ -171,8 +258,26 @@ const ProfileContentCoverLetter = styled.div`
     font-weight : bold;
     color: #444444;
     text-align: left;
+    padding: 20px;
 
     @media (max-width: 768px) {
         font-size: 13px;
+`;
+const StyledLabel = styled.label`
+    display : white;
+    margin-bottom: 10px
+`;
+const StyledInput = styled.input`
+    box-sizing: border-box;
+    display : block;
+    width:100%;
+    margin-bottom: 20px
+`;
+const StyledTextArea = styled.textarea`
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 200px;
+    margin-bottom: 20px
 `;
 export default ProfilePage;
