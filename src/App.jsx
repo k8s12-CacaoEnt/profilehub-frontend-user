@@ -6,6 +6,8 @@ import ProfilePage from './pages/ProfilePage';
 import NoticeListPage from './pages/NoticeListPage';
 import NoticePage from './pages/NoticePage';
 import ProfileUploadPage from './pages/ProfileUploadPage';
+import NoticeUploadPage from './pages/NoticeUploadPage';
+
 import Button from '@mui/material/Button';
 import './App.css';
 
@@ -40,6 +42,7 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/ProfilePage" element={<ProfilePage />} />
             <Route path="/ProfileUploadPage" element={<ProfileUploadPage />} />
+            <Route path="/NoticeUploadPage" element={<NoticeUploadPage />} />
             <Route path="/NoticeListPage" element={<NoticeListPage />} />
             <Route path="/notice/:noticeID" element={<NoticePage />} />
         </Routes>
